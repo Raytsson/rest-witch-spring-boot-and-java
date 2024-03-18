@@ -1,32 +1,23 @@
-package br.com.raytsson.restwitchspringbootandjava.model;
-
-import jakarta.persistence.*;
+package br.com.raytsson.restwitchspringbootandjava.data.vo.v2;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
-@Entity
-@Table(name = "person")
-public class Person implements Serializable {
+public class PersonVOV2 implements Serializable {
     public static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "firts_name", nullable = false, length = 80)
     private String firstName;
-    @Column(name = "last_name", nullable = false, length = 80)
     private String lastName;
-    @Column (nullable = false, length = 110)
     private String address;
-    @Column (nullable = false, length = 6)
     private String gender;
+    private Date birthDay;
 
-    public Person() {
+    public PersonVOV2() {
     }
 
-    public Person(Long id, String firstName, String lastName, String address, String gender) {
+    public PersonVOV2(Long id, String firstName, String lastName, String address, String gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -74,16 +65,24 @@ public class Person implements Serializable {
         this.gender = gender;
     }
 
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(id, person.id);
+        PersonVOV2 that = (PersonVOV2) o;
+        return id.equals(that.id) && firstName.equals(that.firstName) && lastName.equals(that.lastName) && address.equals(that.address) && gender.equals(that.gender) && birthDay.equals(that.birthDay);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, firstName, lastName, address, gender, birthDay);
     }
 }

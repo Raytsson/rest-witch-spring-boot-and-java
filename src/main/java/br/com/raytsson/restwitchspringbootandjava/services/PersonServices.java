@@ -1,72 +1,88 @@
 package br.com.raytsson.restwitchspringbootandjava.services;
 
+import br.com.raytsson.restwitchspringbootandjava.data.vo.v1.PersonVO;
+import br.com.raytsson.restwitchspringbootandjava.data.vo.v2.PersonVOV2;
+import br.com.raytsson.restwitchspringbootandjava.exceptions.ResourceNotFoundException;
+import br.com.raytsson.restwitchspringbootandjava.mapper.DozerMapper;
+import br.com.raytsson.restwitchspringbootandjava.mapper.custom.PersonMapper;
 import br.com.raytsson.restwitchspringbootandjava.model.Person;
+import br.com.raytsson.restwitchspringbootandjava.repositories.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 @Service
 public class PersonServices {
-
-    private final AtomicLong counter = new AtomicLong();
     private Logger logger = Logger.getLogger(PersonServices.class.getName());
 
-    public List<Person> findAll(){
-        logger.info("Buscando todas as pessoas");
 
-        List<Person> persons = new ArrayList<>();
-        for (int i =0; i<8; i++){
-            Person person = mockPerson(i);
-            persons.add(person);
-        }
-        return persons;
+    @Autowired
+    PersonRepository repository;
+
+    @Autowired
+    PersonMapper mapper;
+
+
+    public List<PersonVO> findAll(){
+        logger.info("Buscando todas as pessoas");
+        return DozerMapper.parseListObjects(repository.findAll(), PersonVO.class) ;
     }
 
 
-    public Person findById(String id){
+    public PersonVO findById(Long id){
 
         logger.info("Buscando uma pessoa");
 
-        Person person =  new Person();
-        person.setId(counter.incrementAndGet());
-        person.setFirstName("Leandro");
-        person.setLastName("Costa");
-        person.setAddress("Uberlandia - minas gerais - Brazil");
-        person.setGender("Male");
-        return person;
+        PersonVO person =  new PersonVO();
+
+        var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+        return DozerMapper.parseObject(entity, PersonVO.class);
     }
 
-    public Person create(Person person){
+    public PersonVO create(Person person){
 
         logger.info("Criando uma pessoa");
 
-        return person;
+        var entity =  DozerMapper.parseObject(person, Person.class);
+        var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+
+        return vo;
     }
 
-    public Person update(Person person){
+    //public PersonVOV2 createV2(PersonVOV2 person){
+    public PersonVOV2 createv2(PersonVOV2 person) {
+
+        logger.info("Criando uma pessoa V2");
+
+        var entity =  mapper.convertVoTOEntity(person);
+        var vo = mapper.convertEntityToVO(repository.save(entity));
+
+        return vo;
+    }
+
+    public PersonVO update(PersonVO person){
 
         logger.info("Atualizando uma pessoa");
 
-        return person;
+
+        var entity =  repository.findById(person.getId()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+
+        entity.setFirstName(person.getFirstName());
+        entity.setLastName(person.getLastName());
+        entity.setAddress(person.getAddress());
+        entity.setGender(person.getGender());
+
+        var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+        return vo;
     }
-    public void delete(String id){
+    public void delete(Long id){
 
         logger.info("Deletando uma pessoa");
-    }
 
-
-    //moque estrutura de codigo temporaria que sustenta o codigo antes de estar pronto e assim vai se removendo até estar totalmente pronto.
-    private Person mockPerson(int i) {
-        Person person =  new Person();
-        person.setId(counter.incrementAndGet());
-        person.setFirstName("Person name " + i);
-        person.setLastName("Last name " + i);
-        person.setAddress("Some address in Brasil" + i);
-        person.setGender("Male");
-        return person;
+        var entity =  repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+        repository.delete(entity);
     }
 
 }

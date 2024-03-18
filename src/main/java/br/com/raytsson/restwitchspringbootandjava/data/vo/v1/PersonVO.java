@@ -1,32 +1,21 @@
-package br.com.raytsson.restwitchspringbootandjava.model;
-
-import jakarta.persistence.*;
+package br.com.raytsson.restwitchspringbootandjava.data.vo.v1;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@Table(name = "person")
-public class Person implements Serializable {
+public class PersonVO implements Serializable {
     public static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "firts_name", nullable = false, length = 80)
     private String firstName;
-    @Column(name = "last_name", nullable = false, length = 80)
     private String lastName;
-    @Column (nullable = false, length = 110)
     private String address;
-    @Column (nullable = false, length = 6)
     private String gender;
 
-    public Person() {
+    public PersonVO() {
     }
 
-    public Person(Long id, String firstName, String lastName, String address, String gender) {
+    public PersonVO(Long id, String firstName, String lastName, String address, String gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -78,7 +67,7 @@ public class Person implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
+        PersonVO person = (PersonVO) o;
         return Objects.equals(id, person.id);
     }
 
