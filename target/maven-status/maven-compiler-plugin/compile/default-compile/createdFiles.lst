@@ -1,0 +1,12 @@
+br\com\raytsson\restwitchspringbootandjava\data\vo\v2\PersonVOV2.class
+br\com\raytsson\restwitchspringbootandjava\exceptions\ExceptionResponse.class
+br\com\raytsson\restwitchspringbootandjava\services\PersonServices.class
+br\com\raytsson\restwitchspringbootandjava\model\Person.class
+br\com\raytsson\restwitchspringbootandjava\mapper\DozerMapper.class
+br\com\raytsson\restwitchspringbootandjava\exceptions\ResourceNotFoundException.class
+br\com\raytsson\restwitchspringbootandjava\data\vo\v1\PersonVO.class
+br\com\raytsson\restwitchspringbootandjava\repositories\PersonRepository.class
+br\com\raytsson\restwitchspringbootandjava\mapper\custom\PersonMapper.class
+br\com\raytsson\restwitchspringbootandjava\exceptions\handler\CustomizedResponseEntityHandler.class
+br\com\raytsson\restwitchspringbootandjava\StartUp.class
+br\com\raytsson\restwitchspringbootandjava\controller\PersonController.class

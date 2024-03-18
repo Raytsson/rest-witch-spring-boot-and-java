@@ -1,0 +1,3 @@
+br\com\raytsson\restwitchspringbootandjava\RestWitchSpringBootAndJavaApplicationTests.class
+unitests\mapper\mocks\MockPerson.class
+unittests\mapper\DozerConverterTest.class
